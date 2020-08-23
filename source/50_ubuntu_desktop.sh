@@ -1,5 +1,5 @@
-# Ubuntu desktop-only stuff. Abort if not Ubuntu desktop.
-is_ubuntu_desktop || return 1
+# Mint desktop-only stuff. Abort if not Mint desktop.
+is_mint_desktop || return 1
 
 export BROWSER=google-chrome
 alias manh='man -H'

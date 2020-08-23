@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
 [[ "$1" == "source" ]] || \
 
-echo 'Dotfiles - "Cowboy" Ben Alman - http://benalman.com/'
+echo 'Dotfiles - Matthew Crumley - https://www.matthewcrumley.com/'
 
 if [[ "$1" == "-h" || "$1" == "--help" ]]; then cat <<HELP
 
 Usage: $(basename "$0")
 
 See the README for documentation.
-https://github.com/cowboy/dotfiles
+https://github.com/silentmatt/dotfiles
 
 Copyright (c) 2014 "Cowboy" Ben Alman
+Copyright (c) 2020 Matthew Crumley
 Licensed under the MIT license.
 http://benalman.com/about/license/
 HELP
@@ -69,8 +70,22 @@ function is_ubuntu() {
 function is_ubuntu_desktop() {
   dpkg -l ubuntu-desktop >/dev/null 2>&1 || return 1
 }
+function is_mint() {
+  [[ "$(cat /etc/issue 2> /dev/null)" =~ Mint ]] || return 1
+}
+function is_mint_desktop() {
+  dpkg -l mint-meta-cinnamon >/dev/null 2>&1 ||
+  dpkg -l mint-meta-mate >/dev/null 2>&1 ||
+  dpkg -l mint-meta-xfce >/dev/null 2>&1 || return 1
+}
+function is_linux() {
+  is_ubuntu || is_mint
+}
+function is_linux_desktop() {
+  is_ubuntu_desktop || is_mint_desktop
+}
 function get_os() {
-  for os in osx ubuntu ubuntu_desktop; do
+  for os in osx ubuntu ubuntu_desktop mint mint_desktop linux linux_desktop; do
     is_$os; [[ $? == ${1:-0} ]] && echo $os
   done
 }
@@ -398,11 +413,11 @@ while true; do sudo -n true; sleep 10; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Install a custom sudoers file that allows "sudo apt-get" to be executed
 # without asking for a password.
-sudoers_file=/etc/sudoers.d/cowboy-dotfiles
+sudoers_file=/etc/sudoers.d/silentmatt-dotfiles
 # Contents of the sudoers file.
 function sudoers_text() {
   cat <<EOF
-# This file was created by cowboy's dotfiles script on $(date -I)
+# This file was created by silentmatt's dotfiles script on $(date -I)
 # (which will never update it, only recreate it if it's missing)
 # Sudoers reference: http://ubuntuforums.org/showthread.php?t=1132821
 
@@ -428,7 +443,7 @@ fi
 EOF
 }
 # Offer to create the sudoers file if it doesn't exist.
-if is_ubuntu && [[ ! -e $sudoers_file ]]; then
+if is_linux && [[ ! -e $sudoers_file ]]; then
   cat <<EOF
 
 The sudoers file can be updated to allow "sudo apt-get" to be executed
@@ -455,9 +470,9 @@ if [[ ! "$(type -P gcc)" ]] && is_osx; then
   exit 1
 fi
 
-# If Git is not installed, install it (Ubuntu only, since Git comes standard
+# If Git is not installed, install it (Linux only, since Git comes standard
 # with recent XCode or CLT)
-if [[ ! "$(type -P git)" ]] && is_ubuntu; then
+if [[ ! "$(type -P git)" ]] && is_linux; then
   e_header "Installing Git"
   sudo apt-get -qq install git-core
 fi
@@ -473,7 +488,7 @@ if [[ ! -d $DOTFILES ]]; then
   # Dotfiles directory doesn't exist? Clone it!
   e_header "Downloading dotfiles"
   git clone --branch ${DOTFILES_GH_BRANCH:-master} --recursive \
-    git://github.com/${DOTFILES_GH_USER:-cowboy}/dotfiles.git $DOTFILES
+    git://github.com/${DOTFILES_GH_USER:-silentmatt}/dotfiles.git $DOTFILES
   cd $DOTFILES
 elif [[ "$1" != "restart" ]]; then
   # Make sure we have the latest files.

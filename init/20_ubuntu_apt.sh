@@ -1,5 +1,5 @@
-# Ubuntu-only stuff. Abort if not Ubuntu.
-is_ubuntu || return 1
+# Linux-only stuff. Abort if not Linux.
+is_linux || return 1
 
 apt_keys=()
 apt_source_files=()
@@ -10,7 +10,7 @@ deb_sources=()
 
 installers_path="$DOTFILES/caches/installers"
 
-# Ubuntu distro release name, eg. "xenial"
+# Linux distro release name, eg. "xenial"
 release_name=$(lsb_release -c | awk '{print $2}')
 
 function add_ppa() {
@@ -51,7 +51,7 @@ apt_packages+=(
 )
 
 apt_packages+=(vim)
-is_ubuntu_desktop && apt_packages+=(vim-gnome)
+is_linux_desktop && apt_packages+=(vim-gnome)
 
 # https://github.com/neovim/neovim/wiki/Installing-Neovim
 add_ppa ppa:neovim-ppa/stable
@@ -60,7 +60,7 @@ apt_packages+=(neovim)
 # https://launchpad.net/~stebbins/+archive/ubuntu/handbrake-releases
 add_ppa ppa:stebbins/handbrake-releases
 apt_packages+=(handbrake-cli)
-is_ubuntu_desktop && apt_packages+=(handbrake-gtk)
+is_linux_desktop && apt_packages+=(handbrake-gtk)
 
 # https://github.com/rvm/ubuntu_rvm
 add_ppa ppa:rael-gc/rvm
@@ -87,7 +87,7 @@ add_ppa ppa:hnakamur/tmux
 add_ppa ppa:greymd/tmux-xpanes
 apt_packages+=(tmux-xpanes)
 
-if is_ubuntu_desktop; then
+if is_linux_desktop; then
   # http://www.omgubuntu.co.uk/2016/06/install-latest-arc-gtk-theme-ubuntu-16-04
   # apt_keys+=(http://download.opensuse.org/repositories/home:Horst3180/xUbuntu_16.04/Release.key)
   # apt_source_files+=(arc-theme)
