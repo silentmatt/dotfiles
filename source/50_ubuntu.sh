@@ -1,12 +1,6 @@
 # Linux-only stuff. Abort if not Linux.
 is_linux || return 1
 
-# Package management
-alias update="sudo apt-get -qq update && sudo apt-get upgrade"
-alias install="sudo apt-get install"
-alias remove="sudo apt-get remove"
-alias search="apt-cache search"
-
 alias say=spd-say
 
 # Make 'less' more.
