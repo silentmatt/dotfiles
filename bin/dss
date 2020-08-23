@@ -1,0 +1,2 @@
+#!/bin/sh
+exec java -jar ~/src/dss/dist/dss.jar $*

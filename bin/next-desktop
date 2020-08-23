@@ -1,0 +1,6 @@
+#!/bin/bash
+
+workspace=$(wmctrl -d | egrep '^[0-9]+ +\*' | cut -d ' ' -f1)
+workspace_count=$(wmctrl -d | wc -l)
+wmctrl -s $(( ($workspace + 1) % $workspace_count ))
+

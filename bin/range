@@ -1,0 +1,23 @@
+#!/usr/bin/rhino
+
+var start,end;
+
+switch (arguments.length) {
+case 0:
+    start = 0;
+    end = 0;
+    break;
+case 1:
+    start = 0;
+    end = arguments[0];
+    break;
+case 2:
+default:
+    start = arguments[0];
+    end = arguments[1];
+    break;
+}
+
+for (var i = start; i < end; i++) {
+    print(i);
+}

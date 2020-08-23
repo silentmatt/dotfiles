@@ -2,11 +2,7 @@
   name = Matthew Crumley
   email = email@matthewcrumley.com
 [core]
-  autocrlf = input
-  whitespace = fix,space-before-tab,tab-in-indent,trailing-space
   excludesfile = ~/.gitignore_global
-[apply]
-  whitespace = fix
 [alias]
   br = branch
   ci = commit
@@ -19,6 +15,8 @@
   rv = review
   st = status
   ksdiff = difftool -y -t Kaleidoscope
+[branch]
+	autosetuprebase = always
 [branch "master"]
   remote = origin
   merge = refs/heads/master
@@ -59,3 +57,5 @@
   insteadOf = "gist:"
 [url "git@heroku.com:"]
   insteadOf = "heroku:"
+[gc]
+	autoDetach = false

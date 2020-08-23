@@ -1,0 +1,16 @@
+#!/usr/bin/env ringo
+
+var line;
+var sum = 0;
+var count = 0;
+var value;
+
+while ((line = system.stdin.readLine())) {
+    value = parseFloat(line);
+    if (!isNaN(value)) {
+        sum += value;
+        count++;
+    }
+}
+
+print(sum / count);
