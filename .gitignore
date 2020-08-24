@@ -4,6 +4,8 @@
 
 # Top secret stuff!
 /link/.ssh/id_*
+!/link/.ssh/id_rsa.asc
+!/link/.ssh/id_rsa.pub.asc
 /link/.ssh/*.pem
 /link/.ssh/known_hosts*
 

@@ -28,3 +28,5 @@ function decrypt() {
 e_header "Decrypting files"
 decrypt ~/.pgpass
 decrypt ~/.netrc
+decrypt ~/.ssh/id_rsa
+decrypt ~/.ssh/id_rsa.pub
