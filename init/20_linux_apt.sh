@@ -86,6 +86,16 @@ if is_linux_desktop; then
     apt_source_files+=(google-chrome)
     apt_source_texts+=("deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main")
     apt_packages+=(google-chrome-stable)
+
+    # https://flight-manual.atom.io/getting-started/sections/installing-atom/
+    apt_keys+=(https://packagecloud.io/AtomEditor/atom/gpgkey)
+    apt_source_files+=(atom)
+    apt_source_texts+=("deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main")
+    apt_packages+=(atom)
+
+    # https://code.visualstudio.com/docs/setup/linux
+    deb_installed+=(/usr/bin/code)
+    deb_sources+=(https://update.code.visualstudio.com/latest/linux-deb-x64/stable)
   fi
 
   # https://www.charlesproxy.com/documentation/installation/apt-repository/
