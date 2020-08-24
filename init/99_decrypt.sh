@@ -27,3 +27,4 @@ function decrypt() {
 
 e_header "Decrypting files"
 decrypt ~/.pgpass
+decrypt ~/.netrc
