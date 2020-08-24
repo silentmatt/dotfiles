@@ -34,6 +34,7 @@ apt_packages+=(
   sl
   telnet
   tree
+  pass
 )
 
 is_mint && apt_packages+=(docker.io)
