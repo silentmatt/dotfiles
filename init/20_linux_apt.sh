@@ -5,6 +5,7 @@ apt_keys=()
 apt_source_files=()
 apt_source_texts=()
 apt_packages=()
+deb_package_names=()
 deb_installed=()
 deb_sources=()
 
@@ -94,6 +95,7 @@ if is_linux_desktop; then
     apt_packages+=(atom)
     function postinstall_atom() {
       e_arrow "Installing Atom packages"
+      # apm list --installed --bare >"$DOTFILES/res/atom/packages.list"
       apm install --packages-file "$DOTFILES/res/atom/packages.list"
       e_arrow "Applying Atom settings"
       if [[ -f ~/.atom/config.cson ]]; then
@@ -107,8 +109,23 @@ if is_linux_desktop; then
     }
 
     # https://code.visualstudio.com/docs/setup/linux
+    deb_package_names+=(code)
     deb_installed+=(/usr/bin/code)
     deb_sources+=(https://update.code.visualstudio.com/latest/linux-deb-x64/stable)
+    function postinstall_code() {
+      e_arrow "Installing Visual Studio Code packages"
+      # code --list-extensions >"$DOTFILES/res/vscode/packages.list"
+      xargs -L 1 code --install-extension <"$DOTFILES/res/vscode/packages.list"
+      e_arrow "Applying Visual Studio Code settings"
+      if [[ -f ~/.config/Code/User/settings.json ]]; then
+        [[ -e "$backup_dir" ]] || mkdir -p "$backup_dir"
+        mv -i ~/.config/Code/User/settings.json "$backup_dir/vscode-settings.json"
+      fi
+      ln -s "$DOTFILES/res/vscode/settings.json" ~/.config/Code/User/settings.json
+      # keymap
+      # snippets
+      # styles?
+    }
   fi
 
   # https://www.charlesproxy.com/documentation/installation/apt-repository/
@@ -172,21 +189,25 @@ if is_linux_desktop; then
   #apt_packages+=(grub-customizer)
 
   # https://support.gitkraken.com/how-to-install
+  #deb_package_names+=(gitkraken)
   #deb_installed+=(/usr/bin/gitkraken)
   #deb_sources+=(https://release.gitkraken.com/linux/gitkraken-amd64.deb)
 
   # http://www.get-notes.com/linux-download-debian-ubuntu
   #apt_packages+=(libqt5concurrent5)
+  #deb_package_names+=(notes)
   #deb_installed+=(/usr/bin/notes)
   #deb_sources+=("https://github.com/nuttyartist/notes/releases/download/v1.0.0/notes_1.0.0_amd64-$release_name.deb")
 
   # https://www.dropbox.com/install-linux
   #apt_packages+=(python-gtk2 python-gpgme)
+  #deb_package_names+=(dropbox)
   #deb_installed+=(/usr/bin/dropbox)
   #deb_sources+=("https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2015.10.28_amd64.deb")
 
   # http://askubuntu.com/a/852727
   apt_packages+=(cabextract)
+  deb_package_names+=(msttcorefonts)
   deb_installed+=(/usr/share/fonts/truetype/msttcorefonts)
   deb_sources+=(deb_source_msttcorefonts)
   function deb_source_msttcorefonts() {
@@ -195,15 +216,18 @@ if is_linux_desktop; then
   }
 
   # https://slack.com/downloads/instructions/linux
+  #deb_package_names+=(slack)
   #deb_installed+=(/usr/bin/slack)
   #deb_sources+=(https://downloads.slack-edge.com/linux_releases/slack-desktop-2.5.2-amd64.deb)
 
   # https://discordapp.com/download
+  #deb_package_names+=(discord)
   #deb_installed+=(/usr/bin/discord)
   #deb_sources+=("https://discordapp.com/api/download?platform=linux&format=deb")
 
   # http://askubuntu.com/questions/854480/how-to-install-the-steam-client/854481#854481
   #apt_packages+=(python-apt)
+  #deb_package_names+=(steam)
   #deb_installed+=(/usr/bin/steam)
   #deb_sources+=(deb_source_steam)
   #function deb_source_steam() {
@@ -312,10 +336,13 @@ if (( ${#deb_installed_i[@]} > 0 )); then
   for i in "${deb_installed_i[@]}"; do
     e_arrow "${deb_installed[i]}"
     deb="${deb_sources[i]}"
+    package="${deb_package_names[i]}"
     [[ "$(type -t "$deb")" == function ]] && deb="$($deb)"
     installer_file="$installers_path/$(echo "$deb" | sed 's#.*/##')"
     wget -O "$installer_file" "$deb"
+    [[ "$(type -t preinstall_$package)" == function ]] && preinstall_$package
     sudo dpkg -i "$installer_file"
+    [[ "$(type -t postinstall_$package)" == function ]] && postinstall_$package
   done
 fi
 
