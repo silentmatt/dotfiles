@@ -1,0 +1,39 @@
+"*":
+  "activate-power-mode":
+    autoToggle: false
+    plugins:
+      playAudio: true
+      screenShake: true
+  "atom-beautify":
+    general:
+      _analyticsUserId: "48002a29-398e-4abf-b471-42d6310ed8fc"
+  core:
+    disabledPackages: [
+      "linter-eslint"
+      "linter"
+      "linter-ui-default"
+      "atom-ternjs"
+    ]
+    packagesWithKeymapsDisabled: [
+      "es6-javascript"
+    ]
+    telemetryConsent: "limited"
+  editor:
+    invisibles: {}
+  "exception-reporting":
+    userId: "11231b57-8e19-ec43-fde1-ddadd42efcc0"
+  "file-icons":
+    coloured: false
+  linter: {}
+  "linter-ui-default":
+    panelHeight: 69
+    showPanel: true
+  pigments:
+    supportedFiletypes: [
+      "*.css"
+      "*.dss"
+      "*.scss"
+      "*.less"
+    ]
+  welcome:
+    showOnStartup: false

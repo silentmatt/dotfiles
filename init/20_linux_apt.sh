@@ -92,6 +92,19 @@ if is_linux_desktop; then
     apt_source_files+=(atom)
     apt_source_texts+=("deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main")
     apt_packages+=(atom)
+    function postinstall_atom() {
+      e_arrow "Installing Atom packages"
+      apm install --packages-file "$DOTFILES/res/atom/packages.list"
+      e_arrow "Applying Atom settings"
+      if [[ -f ~/.atom/config.cson ]]; then
+        [[ -e "$backup_dir" ]] || mkdir -p "$backup_dir"
+        mv -i ~/.atom/config.cson "$backup_dir/atom-config.cson"
+      fi
+      ln -s "$DOTFILES/res/atom/config.cson" ~/.atom/config.cson
+      # keymap.cson
+      # snippets.cson
+      # styles.less
+    }
 
     # https://code.visualstudio.com/docs/setup/linux
     deb_installed+=(/usr/bin/code)
