@@ -38,8 +38,8 @@ apt_packages+=(
   pass
 )
 
-is_mint && apt_packages+=(docker.io)
-is_mint && apt_packages+=(docker-compose)
+#is_mint && apt_packages+=(docker.io)
+#is_mint && apt_packages+=(docker-compose)
 is_mint && apt_packages+=(hollywood)
 is_mint && apt_packages+=(cmatrix)
 is_mint && apt_packages+=(imagemagick)
