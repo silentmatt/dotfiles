@@ -245,6 +245,7 @@ if is_linux_desktop; then
 fi
 
 function other_stuff() {
+  true
   # Install Git Extras
   #if [[ ! "$(type -P git-extras)" ]]; then
   #  e_header "Installing Git Extras"
